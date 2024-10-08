@@ -14,20 +14,11 @@ def login_user(request):
         print(username, password)
         if user:
             login(request, user)
-            return redirect(reverse_lazy( 'home') ) 
+            return redirect(reverse_lazy('home'))
         else:
-            messages.add_message(request,messages.WARNING, "Parol yoki username noto'g'ri")
-        
+            messages.add_message(request, messages.WARNING, "Parol yoki username noto'g'ri")
     elif request.method == 'GET':
-        return render(request, 'login.html' )
-    
-
-
-
-
-    
-
-
+        return render(request, 'login.html')
 
 
 def register_user(request):
@@ -38,9 +29,8 @@ def register_user(request):
             form.save()
             return redirect(reverse_lazy('login'))
         else:
-            messages.add_message(request,messages.WARNING, form.errors)
-    return render(request, 'register.html', {'form':form})
-
+            messages.add_message(request, messages.WARNING, form.errors)
+    return render(request, 'register.html', {'form': form})
 
 
 def logout_user(request):

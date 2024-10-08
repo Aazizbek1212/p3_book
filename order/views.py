@@ -1,8 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from main.permissions import new_order_permission
 from order.forms import OrderForm
 
-from django.contrib.auth.decorators import login_required
 import telegram
 
 
@@ -12,7 +11,7 @@ bot = telegram.Bot(token='7208873739:AAFx1jjr2Trd8saP0AfDjkx0LckwrFAD0I0')
 @new_order_permission(login_url='login')
 def new_order(request, pk):
     if request.method == 'POST':
-        form  = OrderForm(request.POST)
+        form = OrderForm(request.POST)
         if form.is_valid():
             form.save()
             print('sdfsdfsf')

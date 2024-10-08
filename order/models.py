@@ -1,6 +1,7 @@
 from django.db import models
 from main.models import Book
 
+
 class Order(models.Model):
     STATUS_CHOISES = (
         ('new', 'Yangi buyurtma'),
@@ -29,7 +30,6 @@ class Order(models.Model):
         ('xorazm', 'Xorazm viloyati')
     )
 
-
     name = models.CharField(max_length=500)
     book = models.ForeignKey(Book, on_delete=models.SET_NULL, blank=True, null=True)
     status = models.CharField(max_length=9, choices=STATUS_CHOISES, default=STATUS_CHOISES[0][0])
@@ -39,11 +39,5 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_created=True, auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    
-
-
-
-
     def __str__(self):
         return self.name
-    

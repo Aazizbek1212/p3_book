@@ -18,14 +18,11 @@ def new_order_permission(view_func=None, login_url=None):
     return actual_decorator
 
 
-
-
-
-
 def admin(user):
     return user.is_authenticated and user.username == 'admin'
 
-def new_order_permission(view_func=None, login_url=None):
+
+def new_order(view_func=None, login_url=None):
     actual_decorator = user_passes_test(
         lambda u: admin(u),
         login_url=login_url,

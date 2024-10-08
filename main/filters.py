@@ -6,4 +6,4 @@ from main.models import Book
 class BookFilter(FilterSet):
     class Meta:
         model = Book
-        fields = [ 'aouthors' , 'genre' , 'price']
+        fields = ['aouthors', 'genre', 'price']
