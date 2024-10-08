@@ -1,0 +1,207 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <title>Book</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo-lugx-gaming.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <style>
+      .zoom {
+          transition: transform 0.2s; /* Animation */
+      }
+      .zoom:hover {
+          transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+      }
+      .button-zoom {
+        transition: transform 0.2s; /* Animation */
+    }
+    .button-zoom:hover {
+        transform: scale(1.1); /* 110% zoom */
+    }
+  </style>
+<!--
+
+TemplateMo 589 lugx gaming
+
+https://templatemo.com/tm-589-lugx-gaming
+
+-->
+  </head>
+
+<body>
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="index.html" class="logo">
+                      <img src="{% static 'images/download.jpg' %}" alt="" style="width: 60px;">
+                  </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                      <li><a href="{% url 'home' %}"  class="zoom">Bosh sahifa</a></li>
+                      <li><a href="{% url 'shop' %}" class="zoom">Barcha mahsulotlar</a></li>
+                      <li><a href="product-details.html" class="active zoom">Mahsulot haqida</a></li>
+                      <li><a href="{% url 'kitoblar' %}" class="zoom">Bog'lanish</a></li>
+                      {%if request.user.is_authenticated%}<li><a href="#">{{request.user.username}}</a></li>
+                      <li><a href="{% url 'add' %}" class="zoom"><i class="fa-solid fa-plus"></i></a></li>
+                      <li><a href="{% url 'logout' %}" class="zoom"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+                      {% else %}
+                      <li><a href="{% url 'login' %}" class="zoom">Kirish</a></li>
+                      <li><a href="{% url 'register' %}" class="zoom">Ro'yxatdan o'tish</a></li>
+                      {%endif%}
+                  </ul>   
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                </nav>
+            </div>
+        </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+  <div class="page-heading header-text">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h3>{{detail.title}}</h3>
+          <span class="breadcrumb"><a href="#">Bosh sahifa</a>  >  <a href="#">Mahsulot haqida</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="single-product section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="left-image">
+            <img src="{{detail.image.url}}" alt="">
+          </div>
+        </div>
+        <div class="col-lg-6 align-self-center">
+          <h4>{{detail.title}}</h4>
+          <span class="price">{{detail.price}}</span>
+          {% comment %} <p>{{detail.aouthors}}</p> {% endcomment %}
+          <p>Sahifalar soni:          {{detail.pages}}</p>
+          <form  action="{% url 'new_order' detail.id  %}" method='POST'>
+            {% comment %} <input type="qty" class="form-control" id="1" aria-describedby="quantity" placeholder="1"> {% endcomment %}
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit"><i class="fa fa-shopping-bag"></i>Sotib olish</button>
+            
+          </form>
+          <ul>
+            <li><span>Aouthors:</span>{% for muallif in detail.aouthors.all %}{{ muallif.name }}{%endfor%}</li>
+            <li><span>Genre:</span> <a href="#">{% for Janr in detail.genre.all %}{{ Janr.name }}{% endfor %}</a></li>
+            <li><span>Languages:</span> <a href="#">{{detail.language}}</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-12">
+          <div class="sep"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="more-info">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="tabs-content">
+            <div class="row">
+              <div class="nav-wrapper ">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Description</button>
+                  </li>
+                 
+                </ul>
+              </div>              
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                  <p>{{detail.description}}</p>
+                  <br>
+                </div>
+                <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                  <p>Coloring book air plant shabby chic, crucifix normcore raclette cred swag artisan activated charcoal. PBR&B fanny pack pok pok gentrify truffaut kitsch helvetica jean shorts edison bulb poutine next level humblebrag la croix adaptogen. <br><br>Hashtag poke literally locavore, beard marfa kogi bruh artisan succulents seitan tonx waistcoat chambray taxidermy. Same cred meggings 3 wolf moon lomo irony cray hell of bitters asymmetrical gluten-free art party raw denim chillwave tousled try-hard succulents street art.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section categories related-games">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="section-heading">
+            
+            <h2>Barcha kitoblar</h2>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="main-button">
+            <a href="{% url 'shop' %}">Barcha kitoblarni ko'rish</a>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="col-lg-12">
+        <p>Copyright © 2048 LUGX Gaming Company. All rights reserved. &nbsp;&nbsp; <a rel="nofollow" href="https://templatemo.com" target="_blank">Design: TemplateMo</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'assets/js/isotope.min.js' %}"></script>
+  <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+  <script src="{% static 'assets/js/counter.js' %}"></script>
+  <script src="{% static 'assets/js/custom.js' %}"></script>
+
+  </body>
+</html>
