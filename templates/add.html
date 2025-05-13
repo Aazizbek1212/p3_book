@@ -86,7 +86,6 @@
                         <ul class="nav">
                             <li><a href="{% url 'home' %}" class="active zoom">Bosh sahifa</a></li>
                             <li><a href="{% url 'shop' %}" class="zoom">Barcha mahsulotlar</a></li>
-                            <li><a href="product-details.html" class="zoom">Mahsulot haqida</a></li>
                             <li><a href="{% url 'kitoblar' %}" class="zoom">Bog'lanish</a></li>
                             {% if request.user.is_authenticated %}
                                 <li><a href="#">{{ request.user.username }}</a></li>

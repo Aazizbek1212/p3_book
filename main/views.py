@@ -1,19 +1,28 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from django_filters.views import FilterView
 from main.filters import BookFilter
 from main.forms import AddForm
-from .models import Book
-from order.forms import OrderForm
+from .models import Author, Book, Genre
+from order.forms import CommentForm, OrderForm
 
 
 def home_view(request):
     book = Book.objects.all()[:4]
     books = Book.objects.all()[:6]
     kitoblar = Book.objects.all()
-    return render(request, 'index.html', {'book': book, 'books': books, 'kitob': kitoblar})
+    genre = Genre.objects.all()[:5]
+    authors = Author.objects.filter(country="O'zbekiston")
+    kitob_uz = Book.objects.filter(aouthors__in=authors).distinct().order_by('-id')[:6]
+    return render(request, 'index.html', {'book': book, 'books': books, 'genres': genre, 'kitob': kitoblar, 'kitob_uz': kitob_uz})
+
+
+def books_by_genre(request, id):
+    genre = get_object_or_404(Genre, pk=id)
+    book_genre = Book.objects.filter(genre=genre)
+    return render(request, 'genre.html', {'genre': genre, 'book_genre': book_genre})
 
 
 def book_view(request, id):
@@ -37,7 +46,8 @@ class ShopView(FilterView):
 
 
 def contact_view(request):
-    return render(request, 'contact.html')
+    form = CommentForm
+    return render(request, 'contact.html', {'form':form})
 
 
 class CreateBookView(PermissionRequiredMixin, CreateView):
